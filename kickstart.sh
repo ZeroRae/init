@@ -6,7 +6,7 @@ echo
 sleep 2
 
 INITDIR=~/workspace/wormangel/init
-ZINITDIR=~/workspace/lmedeirosdea/init
+ZINITDIR=~/workspace/ZeroRae/init
 
 # OSX Tweaks
 echo "🖱 Setting up OSX tweaks..."
@@ -46,7 +46,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/mas
 # Generate SSH
 echo "🔶 Generating new SSH key..."
 echo
-ssh-keygen -t rsa -b 4096 -C "lucas.medeiros.de.azevedo@zalando.de"
+ssh-keygen -t rsa -b 4096 -C "rene.pikulla@zalando.de"
 echo
 echo "Adding newly-created key to ssh-agent. You will be prompted for the password."
 eval "$(ssh-agent -s)"
@@ -109,7 +109,7 @@ cp $INITDIR/iTerm2/profiles.json ~/Library/Application Support/iTerm2/DynamicPro
 # Zalando - Install tooling
 echo "🔶 Installing Zalando tooling..."
 echo
-sudo pip3 install --upgrade stups stups-berry zalando-kubectl zmon-cli scm-source mkdocs mkdocs-material pymdown-extensions
+sudo pip3 install --upgrade stups zalando-kubectl zmon-cli scm-source mkdocs mkdocs-material pymdown-extensions
 
 # Zalando - Configure tooling
 echo "🔶 Configuring Zalando tooling..."
@@ -124,8 +124,8 @@ sudo mkdir -p /meta/credentials
 sudo chown $(whoami) /meta/credentials
 stups configure stups.zalan.do
 zmon configure
-git config --global user.name "Lucas Medeiros de Azevedo"
-git config --global user.email "lucas.medeiros.de.azevedo@zalando.de"
+git config --global user.name "Rene Pikulla"
+git config --global user.email "rene.pikulla@zalando.de"
 git config --global --add hub.host github.bus.zalan.do
 export GITHUB_TOKEN=REPLACE_ME_WITH_A_TOKEN
 
@@ -133,42 +133,33 @@ export GITHUB_TOKEN=REPLACE_ME_WITH_A_TOKEN
 echo "🔶 Setting up Zalando dotfiles..."
 echo
 echo "This step will:"
-echo " * Clone the internal lmedeirosdea/init repo"
-echo " * Copy .m2 and .aws directories to home"
+echo " * Clone the internal ZeroRae/init repo"
 echo " * Copy .zalandorc, .zalando-stups and .zalandorc to home"
-echo " * Copy the berry.yaml to home"
 echo
-git clone git@github.bus.zalan.do:lmedeirosdea/init.git $ZINITDIR
-cp -a $ZINITDIR/.m2 ~/
+git clone git@github.bus.zalan.do:ZeroRae/init.git $ZINITDIR
 cp -a $ZINITDIR/.aws ~/
 cp $ZINITDIR/.zalandorc ~/
 cp $ZINITDIR/.zalando-stups ~/
 cp $ZINITDIR/.zalando-k8s ~/
-cp $ZINITDIR/berry.yaml ~/
 
 # Zalando - Copy list of favorite Servers (Zalando SMB drives)
 echo "🔶 Setting up Zalando shared drives as Favorite Servers..."
 echo
 cp $ZINITDIR/com.apple.LSSharedFileList.FavoriteServers.sfl2 ~/Library/Application\ Support/com.apple.sharedfilelist/com.apple.LSSharedFileList.FavoriteServers.sfl2
 
-# Zalando - Copy pgAdmin4 servers list
-echo "🔶 Copying Team CAT DB servers to pgAdmin4..."
-echo
-cp -a $ZINITDIR/.pgadmin ~/
-
 # Zalando - Clone all the projects (allthethings)
-echo "🔶 Cloning Team CAT git repositories..."
+echo "🔶 Cloning Team ARGO git repositories..."
 echo
-mkdir ~/workspace/team-cat
-mkdir -p ~/workspace/go/src/github.bus.zalan.do/team-cat
+mkdir ~/workspace/team-argo
+mkdir -p ~/workspace/go/src/github.bus.zalan.do/team-argo
 
-projects=(backstage-media-service-k8s-deploy backstage-ui backstage-ui-k8s-deploy baywatch baywatch-k8s-deploy butterfly can-i-has-sku carticle carticle-k8s-deploy cat-bulk-ops-api cat-bulk-ops-api-k8s-deploy catabase-db-k8s-deploy cateye cateye-k8s-deploy catfix cathttpd catman catmium cattributes clarifications-api clarifications-api-k8s-deploy content-creation-k8s-resources continuous-delivery garfield garfield-k8s-deploy image-auto-upload-ui image-auto-upload-ui-k8s-deploy inbound-api inbound-api-k8s-deploy local-sync-client moma-backend moma-frontend orbit-dashboard-api orbit-ui orbit-ui-k8s-deploy outbound-api outbound-api-k8s-deploy polly polly-k8s-deploy production-comet supercat supplier-data-api tracking-api tracking-api-k8s-deploy)
+projects=(cherry cherry-widgets cherry-api cherry-doc argo-playbook argo_op)
 
 for p in $projects; do
-    git clone git@github.bus.zalan.do:team-cat/$p.git ~/workspace/team-cat/$p;
+    git clone git@github.bus.zalan.do:team-argo/$p.git ~/workspace/team-argo/$p;
 done
 
-git clone git@github.bus.zalan.do:team-cat/backstage-media-service.git ~/workspace/go/src/github.bus.zalan.do/team-cat/backstage-media-service
+# git clone git@github.bus.zalan.do:argo/argo_op.git ~/workspace/go/src/github.bus.zalan.do/team-cat/backstage-media-service
 
 echo "🎉 All done!"
 echo
@@ -205,16 +196,6 @@ echo "    · Redux Dev Tools > https://chrome.google.com/webstore/detail/redux-d
 echo
 echo " 💻 iTerm2:"
 echo "  ⚙️  Options > Preferences > General > Load preferences from a custom folder or URL > $INITDIR/iTerm2"
-echo
-echo " 🌡  iStats Menus 6:"
-echo "  ⚙️  iStats Menus - Registration - Key can be found on Gmail under 'istats order'"
-echo "  ⚙️  File > Import Settings > ~/istats.ismp"
-echo
-echo " 📱 IntelliJ IDEA Ultimate:"
-echo "  ⚙️  License Key: login with Zalando e-mail address"
-echo
-echo " 📦 Dropbox:"
-echo "  ⚙️  Selective Sync: configure to sync /docs"
 echo
 echo "Zalando steps to do manually:"
 echo " 🔶 Upload new SSH key to ZACK - https://access.zalando.net"
